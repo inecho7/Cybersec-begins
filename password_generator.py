@@ -1,9 +1,10 @@
-import random
+import secrets
 import string
 
 def make_password(length):
     pool = string.ascii_letters + string.digits + string.punctuation
-    result = "".join(random.choice(pool) for i in range(length))
+    #Swapped random.choice with secret.choice for military grade randomness
+    result = "".join(secrets.choice(pool) for i in range(length))
     (print("🔒 New Password:", result))
 
 while True:
@@ -18,10 +19,10 @@ while True:
             #1 call your function here: make_password (le#2 Put your break here to exit!
             make_password(length)
             break
+        else:
+            print ("❌️ Too Weak! Passwords must be 8 or more characters")
     else:
-        print ("❌️ Too Weak! Passwords must be 8 or more characters")
-else:
-        print ("❌️ Error: Those are not valid numbers. Use digits only")   
+            print ("❌️ Error: Those are not valid numbers. Use digits only")   
     #Converts the text "12" into maths number 12
 
 

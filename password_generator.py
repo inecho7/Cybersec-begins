@@ -7,6 +7,31 @@ def make_password(length):
     result = "".join(secrets.choice(pool) for i in range(length))
     (print("🔒 New Password:", result))
 
+    has_upper = False
+    has_lower = False
+    has_digit = False
+    has_special = False
+    for char in result:
+        #checks happen here for each letter
+        if char.isupper():
+            has_upper = True
+        if char.islower():
+            has_lower = True
+        if char.isdigit():
+            has_digit = True
+        if char in string.punctuation:
+            has_special = True
+    score = sum([has_lower,has_upper,has_digit,has_special]) 
+
+    if score == 4:
+        print("Strength:EXCELLENT")
+    if score == 3:
+        print("Strength:GOOD")
+    if score == 2:
+        print("Strength:WEAK")
+    if score == 1:
+        print("TRY AGAIN")        
+
 while True:
 #1.ask user for input and save it as a variable called 'user_input'
     user_input = input ("Enter desired password length (minimum 8):")

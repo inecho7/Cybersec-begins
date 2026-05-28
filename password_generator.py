@@ -1,7 +1,9 @@
 import secrets
 import string
+import hashlib
+import os
 
-def make_password(length):
+def make_password(length,website,username):
     pool = string.ascii_letters + string.digits + string.punctuation
     #Swapped random.choice with secret.choice for military grade randomness
     result = "".join(secrets.choice(pool) for i in range(length))
@@ -32,6 +34,16 @@ def make_password(length):
     if score == 1:
         print("TRY AGAIN")        
 
+    #The Hashing Engine
+    password_bytes = result.encode('utf-8')
+    secure_hash = hashlib.sha256(password_bytes).hexdigest()
+    print("SHA-256 Hash:",secure_hash)
+    file_exists = os.path.isfile("google_passwords.csv")
+    with open("google_passwords.csv","a") as file:
+        if not file_exists:
+            file.write("url,username,password\n")
+            file.write(f"{website},{username},{result}\n")
+
 while True:
 #1.ask user for input and save it as a variable called 'user_input'
     user_input = input ("Enter desired password length (minimum 8):")
@@ -41,8 +53,12 @@ while True:
 
         #Gate 2: Is it long enough? (Notice this is indented inside Gate 1)
         if length >=8:
-            #1 call your function here: make_password (le#2 Put your break here to exit!
-            make_password(length)
+            #ask the user for three different pieces of information
+            website = input("Enter the website/app name:")
+            username = input("Enter the username/email:")
+
+            #3 Pass all three into the function
+            make_password(length, website, username)
             break
         else:
             print ("❌️ Too Weak! Passwords must be 8 or more characters")

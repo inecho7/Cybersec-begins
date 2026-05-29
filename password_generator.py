@@ -51,6 +51,8 @@ def make_password(length,website,username):
         if not file_exists:
             file.write("url,username,password\n")
             file.write(f"{website},{username},{result}\n")
+            print("DEBUG: Data written to CSV successfully!")
+        # If you don't see this, this part of code isn't running
 
 while True:
 #1.ask user for input and save it as a variable called 'user_input'

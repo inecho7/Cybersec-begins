@@ -4,35 +4,43 @@ import hashlib
 import os
 
 def make_password(length,website,username):
-    pool = string.ascii_letters + string.digits + string.punctuation
+    #make the list of characters
+    lower = string.ascii_lowercase
+    upper = string.ascii_uppercase
+    digit = string.digits
+    special = string.punctuation
+    #strict compliance to guarantee one letter of each type
     #Swapped random.choice with secret.choice for military grade randomness
-    result = "".join(secrets.choice(pool) for i in range(length))
-    (print("🔒 New Password:", result))
-
-    has_upper = False
-    has_lower = False
-    has_digit = False
-    has_special = False
-    for char in result:
-        #checks happen here for each letter
-        if char.isupper():
-            has_upper = True
-        if char.islower():
-            has_lower = True
-        if char.isdigit():
-            has_digit = True
-        if char in string.punctuation:
-            has_special = True
-    score = sum([has_lower,has_upper,has_digit,has_special]) 
-
-    if score == 4:
-        print("Strength:EXCELLENT")
-    if score == 3:
-        print("Strength:GOOD")
-    if score == 2:
-        print("Strength:WEAK")
-    if score == 1:
-        print("TRY AGAIN")        
+    guaranteed_chars = [
+        secrets.choice(lower),
+        secrets.choice(upper),
+        secrets.choice(digit),
+        secrets.choice(special)
+    ]
+    #fill the remaining length with random chars
+    all_pool = lower+upper+digit+special
+    remaining_length = length - 4 
+    remaining_chars = [secrets.choice(all_pool) for _ in range(remaining_length)]
+    #combine and shuffle to make sure the four guaranteed letters don't come first always
+    password_list = guaranteed_chars + remaining_chars
+    secrets.SystemRandom().shuffle(password_list)
+    result = "".join(password_list)
+    #new rating system (based on length)
+    if length <10:
+        score = 1
+        rating = "Weak (Too Short)"
+    elif 10<= length <13:
+        score = 2
+        rating = "Good"
+    elif 13<= length <16:
+        score = 3
+        rating = "Strong"
+    else:
+        score = 4
+        rating = "Excellent (Matrix Level Security)"
+    #printing stuff below
+    print(f"Generated Password:{result}") 
+    print(f"Strength Score: {rating}({score}/4)")   
 
     #The Hashing Engine
     password_bytes = result.encode('utf-8')

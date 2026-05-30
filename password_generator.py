@@ -50,31 +50,70 @@ def make_password(length,website,username):
     with open("google_passwords.csv","a") as file:
         if not file_exists:
             file.write("url,username,password\n")
-            file.write(f"{website},{username},{result}\n")
-            print("DEBUG: Data written to CSV successfully!")
+        file.write(f"{website},{username},{result}\n")
+        print("DEBUG: Data written to CSV successfully!")
         # If you don't see this, this part of code isn't running
 
+    def make_passphrase(word_count, website, username):
+        word_vault = []#empty list waiting to hold words
+        with open("words.txt","r") as file:
+            for line in file.readlines():
+            #it grabs one line at a time
+                parts = line.split()
+            word_vault.append(parts[1])
+    chosen_words = [secrets.choice(word_vault) for _ in range(word_count)]
+    result = "-".join(chosen_words)
+    print(f"Generated Passphrase: {result}")
+
+    with open("google_passwords.csv","a") as file:
+        if not file_exists:
+            file.write("url,username,password\n")
+        file.write(f"{website},{username},{result}\n")
+        print("DEBUG: Data written to CSV successfully!")
+    
 while True:
+    try:
+        choice = input("Choose 1 for random password or 2 for passphrase: ")
 #1.ask user for input and save it as a variable called 'user_input'
-    user_input = input ("Enter desired password length (minimum 8):")
-    #Gate 1: Is it a number?
-    if user_input.isdigit():
-        length = int(user_input)
+        if choice == "1":
+            user_input = input ("Enter desired password length (minimum 8): ")
+            #Gate 1: Is input a number?
+            if user_input.isdigit():
+                length = int(user_input)
 
-        #Gate 2: Is it long enough? (Notice this is indented inside Gate 1)
-        if length >=8:
+             #Gate 2: Is it long enough? (Notice this is indented inside Gate 1)
+                if length >=8:
             #ask the user for three different pieces of information
-            website = input("Enter the website/app name:")
-            username = input("Enter the username/email:")
-
-            #3 Pass all three into the function
-            make_password(length, website, username)
-            break
+                    website = input("Enter the website/app name: ")
+                    username = input("Enter the username/email: ")
+        #3 Pass all three into the function
+                    make_password(length, website, username)
+                    break
+                else:
+                    print ("❌️ Too Weak! Passwords must be 8 or more characters")
         else:
-            print ("❌️ Too Weak! Passwords must be 8 or more characters")
-    else:
             print ("❌️ Error: Those are not valid numbers. Use digits only")   
     #Converts the text "12" into maths number 12
+           
+        elif choice == "2":
+            user_input = input ("Enter the desired word count(4-6 recommended): ")
+            if user_input.isdigit():
+                word_count = int(user_input)
+
+                if word_count >= 3:
+                    website = input("Enter website/app name: ")
+                    username = input("Enter username/email: ")
+                    make_passphrase(word_count,website,username)
+                    break
+                else:
+                    print("Passphrase must be at least 3 words")
+            else:
+                print("Please enter a valid number")
+        else:
+            print("Invalid choice. Please select 1 or 2")
+    except ValueError:
+        print("An error occured. Please try again")
+
 
 
 

@@ -65,7 +65,7 @@ def make_passphrase(word_count, website, username):
     result = "-".join(chosen_words)
     print(f"Generated Passphrase: {result}")
 
-    file_exists = os.path.isfile("google_password.csv")
+    file_exists = os.path.isfile("google_passwords.csv")
     with open("google_passwords.csv","a") as file:
         if not file_exists:
             file.write("url,username,password\n")
@@ -105,6 +105,9 @@ while True:
                     website = input("Enter website/app name: ")
                     username = input("Enter username/email: ")
                     make_passphrase(word_count, website, username)
+
+                    import time
+                    time.sleep(0.5)
                     break
                 else:
                     print("Passphrase must be at least 3 words")

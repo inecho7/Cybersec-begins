@@ -54,20 +54,20 @@ def make_password(length,website,username):
         print("DEBUG: Data written to CSV successfully!")
         # If you don't see this, this part of code isn't running
 
-    def make_passphrase(word_count, website, username):
-        word_vault = []#empty list waiting to hold words
-        with open("words.txt","r") as file:
-            for line in file.readlines():
+def make_passphrase(word_count, website, username):
+    word_vault = []#empty list waiting to hold words
+    with open("words.txt","r") as file:
+        for line in file.readlines():
             #it grabs one line at a time
-                parts = line.split()
-            word_vault.append(parts[1])
-    chosen_words = [secrets.choice(word_vault) for _ in range(word_count)]
-    result = "-".join(chosen_words)
-    print(f"Generated Passphrase: {result}")
+            parts = line.split()
+        word_vault.append(parts[1])
+chosen_words = [secrets.choice(word_vault) for _ in range(word_count)]
+result = "-".join(chosen_words)
+print(f"Generated Passphrase: {result}")
 
-    with open("google_passwords.csv","a") as file:
-        if not file_exists:
-            file.write("url,username,password\n")
+with open("google_passwords.csv","a") as file:
+    if not file_exists:
+        file.write("url,username,password\n")
         file.write(f"{website},{username},{result}\n")
         print("DEBUG: Data written to CSV successfully!")
     
@@ -91,11 +91,11 @@ while True:
                     break
                 else:
                     print ("❌️ Too Weak! Passwords must be 8 or more characters")
-        else:
-            print ("❌️ Error: Those are not valid numbers. Use digits only")   
+            else:
+                print ("❌️ Error: Those are not valid numbers. Use digits only")   
     #Converts the text "12" into maths number 12
            
-        elif choice == "2":
+        if choice == "2":
             user_input = input ("Enter the desired word count(4-6 recommended): ")
             if user_input.isdigit():
                 word_count = int(user_input)

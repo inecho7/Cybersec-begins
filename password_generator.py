@@ -60,17 +60,17 @@ def make_passphrase(word_count, website, username):
         for line in file.readlines():
             #it grabs one line at a time
             parts = line.split()
-        word_vault.append(parts[1])
+            word_vault.append(parts[1])
     chosen_words = [secrets.choice(word_vault) for _ in range(word_count)]
     result = "-".join(chosen_words)
     print(f"Generated Passphrase: {result}")
 
-file_exists = os.path.isfile("google_password.csv")
-with open("google_passwords.csv","a") as file:
-    if not file_exists:
-        file.write("url,username,password\n")
-        file.write(f"{website},{username},{result}\n")
-        print("DEBUG: Data written to CSV successfully!")
+    file_exists = os.path.isfile("google_password.csv")
+    with open("google_passwords.csv","a") as file:
+        if not file_exists:
+            file.write("url,username,password\n")
+            file.write(f"{website},{username},{result}\n")
+            print("DEBUG: Data written to CSV successfully!")
     
 while True:
     try:
@@ -104,7 +104,7 @@ while True:
                 if word_count >= 3:
                     website = input("Enter website/app name: ")
                     username = input("Enter username/email: ")
-                    make_passphrase(word_count,website,username)
+                    make_passphrase(word_count, website, username)
                     break
                 else:
                     print("Passphrase must be at least 3 words")

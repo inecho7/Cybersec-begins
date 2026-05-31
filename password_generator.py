@@ -61,10 +61,11 @@ def make_passphrase(word_count, website, username):
             #it grabs one line at a time
             parts = line.split()
         word_vault.append(parts[1])
-chosen_words = [secrets.choice(word_vault) for _ in range(word_count)]
-result = "-".join(chosen_words)
-print(f"Generated Passphrase: {result}")
+    chosen_words = [secrets.choice(word_vault) for _ in range(word_count)]
+    result = "-".join(chosen_words)
+    print(f"Generated Passphrase: {result}")
 
+file_exists = os.path.isfile("google_password.csv")
 with open("google_passwords.csv","a") as file:
     if not file_exists:
         file.write("url,username,password\n")

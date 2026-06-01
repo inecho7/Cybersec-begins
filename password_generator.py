@@ -68,12 +68,12 @@ def make_passphrase(word_count, website, username):
     with open("google_passwords.csv","a") as file:
         if not file_exists:
             file.write("url,username,password\n")
-            file.write(f"{website},{username},{result}\n")
-            print("DEBUG: Data written to CSV successfully!")
+        file.write(f"{website},{username},{result}\n")
+        print("DEBUG: Data written to CSV successfully!")
     
 while True:
     try:
-        choice = input("Choose 1 for random password or 2 for passphrase: ")
+        choice = input("Choose 1 for random password, 2 for passphrase or 3 to exit: ")
 #1.ask user for input and save it as a variable called 'user_input'
         if choice == "1":
             user_input = input ("Enter desired password length (minimum 8): ")
@@ -112,6 +112,10 @@ while True:
                     print("Passphrase must be at least 3 words")
             else:
                 print("Please enter a valid number")
+        elif choice == "3":
+            print("Exitting Password Generator, Goodbye!")
+            break
+
         else:
             print("Invalid choice. Please select 1 or 2")
     except ValueError:

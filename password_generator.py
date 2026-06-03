@@ -1,7 +1,14 @@
+# ZONE - 1 "Imports and Global Configurations"
+# ============================================
+
 import secrets
 import string
 import hashlib
 import os
+
+# ZONE - 2 "Helper Functions (Maths and Estimations)"
+# ===================================================
+
 def estimate_crack_time(input_data,is_passphrase=False):
     if is_passphrase:
         word_count = input_data
@@ -30,6 +37,9 @@ def estimate_crack_time(input_data,is_passphrase=False):
         if years > 1_000_000:
             return"Millions of Years"
         return  f"{int(years):,} years"
+
+# ZONE - 3 "Core Features(Creators)"    
+# ==================================
 
 def make_password(length,website,username):
     #make the list of characters
@@ -69,7 +79,7 @@ def make_password(length,website,username):
     #printing stuff below
     print(f"Generated Password:{result}") 
     print(f"Strength Score: {rating}({score}/4)")   
-    print(f"Estimated time to crack: {estimate_crack_time(password)}")
+    print(f"Estimated time to crack: {estimate_crack_time(result)}")
 
     #The Hashing Engine
     password_bytes = result.encode('utf-8')
@@ -101,7 +111,10 @@ def make_passphrase(word_count, website, username):
             file.write("url,username,password\n")
         file.write(f"{website},{username},{result}\n")
         print("DEBUG: Data written to CSV successfully!")
-    
+
+# ZONE - 4 "Main Execution Loop(The Interface)"
+# =============================================
+
 while True:
     try:
         choice = input("Choose 1 for random password, 2 for passphrase or 3 to exit: ")

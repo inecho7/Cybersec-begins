@@ -2,6 +2,34 @@ import secrets
 import string
 import hashlib
 import os
+def estimate_crack_time(input_data,is_passphrase=False):
+    if is_passphrase:
+        word_count = input_data
+        pool_size = 7776
+        total_combinations = pool_size ** word_count
+    else:
+        length = len(input_data)
+        pool_size = 94
+        total_combinations = pool_size ** length
+
+    guesses_per_second = 100_000_000_000
+    seconds = total_combinations // guesses_per_second
+
+    if seconds < 1:
+        return "Instantaneously"
+    elif seconds < 60:
+        return f"{int(seconds)} seconds"
+    elif seconds < 3600:
+        return f"{int(seconds / 60)} minutes"
+    elif seconds < 8400:
+        return f"{int(seconds // 3600)} hours"
+    elif seconds < 31536000:
+        return f"{int(seconds // 86400)} days"
+    else:
+        years = seconds // 31536000              
+        if years > 1_000_000:
+            return"Millions of Years"
+        return  f"{int(years):,} years"
 
 def make_password(length,website,username):
     #make the list of characters
@@ -41,6 +69,7 @@ def make_password(length,website,username):
     #printing stuff below
     print(f"Generated Password:{result}") 
     print(f"Strength Score: {rating}({score}/4)")   
+    print(f"Estimated time to crack: {estimate_crack_time(password)}")
 
     #The Hashing Engine
     password_bytes = result.encode('utf-8')
@@ -64,6 +93,8 @@ def make_passphrase(word_count, website, username):
     chosen_words = [secrets.choice(word_vault) for _ in range(word_count)]
     result = "-".join(chosen_words)
     print(f"Generated Passphrase: {result}")
+    print(f"Estimated time to crack: {estimate_crack_time(word_count, is_passphrase=True)}")
+
     file_exists = os.path.isfile("google_passwords.csv")
     with open("google_passwords.csv","a") as file:
         if not file_exists:

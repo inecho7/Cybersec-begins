@@ -37,6 +37,15 @@ def estimate_crack_time(input_data,is_passphrase=False):
         if years > 1_000_000:
             return"Millions of Years"
         return  f"{int(years):,} years"
+def get_valid_int(prompt, min_value=1):
+    while True:
+        try:
+            value = int(input(prompt))
+            if value >= min_value:
+                return value
+            print(f"Error: Input must be atleast {min_value}") 
+        except ValueError:
+            print("Error: Invalid Input. Please enter a whole number")     
 
 # ZONE - 3 "Core Features(Creators)"    
 # ==================================

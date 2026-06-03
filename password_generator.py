@@ -148,7 +148,7 @@ while True:
             break
 
         else:
-            print("Invalid choice. Please select 1 or 2")
+            print("Invalid choice. Please select 1, 2 or 3")
     except ValueError:
         print("An error occured. Please try again")
 

@@ -144,7 +144,7 @@ while True:
             website = input("Enter website/app name: ")
             username = input("Enter username/email: ")
             make_passphrase(word_count, website, username)
-            break
+            import sys; sys.exit()
 
         elif choice == "3":
             print("Exiting Password Generator, Goodbye!")

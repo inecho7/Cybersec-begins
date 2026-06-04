@@ -129,50 +129,31 @@ while True:
         choice = input("Choose 1 for random password, 2 for passphrase or 3 to exit: ")
 #1.ask user for input and save it as a variable called 'user_input'
         if choice == "1":
-            user_input = input ("Enter desired password length (minimum 8): ")
-            #Gate 1: Is input a number?
-            if user_input.isdigit():
-                length = int(user_input)
-
-             #Gate 2: Is it long enough? (Notice this is indented inside Gate 1)
-                if length >=8:
-            #ask the user for three different pieces of information
-                    website = input("Enter the website/app name: ")
-                    username = input("Enter the username/email: ")
+            
+            length = get_valid_int("Enter desired password length(minimum 8): ",min_value=8)
+        #ask the user for three different pieces of information
+            website = input("Enter the website/app name: ")
+            username = input("Enter the username/email: ")
         #3 Pass all three into the function
-                    make_password(length, website, username)
-                    break
-                else:
-                    print ("❌️ Too Weak! Passwords must be 8 or more characters")
-            else:
-                print ("❌️ Error: Those are not valid numbers. Use digits only")   
-    #Converts the text "12" into maths number 12
+            make_password(length, website, username)
+            break
+        
            
         if choice == "2":
-            user_input = input ("Enter the desired word count(4-6 recommended): ")
-            if user_input.isdigit():
-                word_count = int(user_input)
+            word_count = get_valid_int("Enter the desired word count(minimum 3): ",min_value=3)
+            website = input("Enter website/app name: ")
+            username = input("Enter username/email: ")
+            make_passphrase(word_count, website, username)
+            break
 
-                if word_count >= 3:
-                    website = input("Enter website/app name: ")
-                    username = input("Enter username/email: ")
-                    make_passphrase(word_count, website, username)
-
-                    import time
-                    time.sleep(0.5)
-                    break
-                else:
-                    print("Passphrase must be at least 3 words")
-            else:
-                print("Please enter a valid number")
         elif choice == "3":
-            print("Exitting Password Generator, Goodbye!")
+            print("Exiting Password Generator, Goodbye!")
             break
 
         else:
             print("Invalid choice. Please select 1, 2 or 3")
     except ValueError:
-        print("An error occured. Please try again")
+        print("An error occurred. Please try again")
 
 
 

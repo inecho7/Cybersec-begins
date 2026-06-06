@@ -3,12 +3,25 @@
 
 import secrets
 import string
-import hashlib
+from cryptography.fernet import Fernet
 import os
 
 # ZONE - 2 "Helper Functions (Maths and Estimations)"
 # ===================================================
+def load_or_create_key ():
+    if os.path.exists("secret.key"):
+        with open("secret.key","rb") as key_file:
+            return key_file.read()
 
+    else:
+        key = Fernet.generate_key()
+        with open("secret.key","wb") as key_file:
+            key_file.write(key)
+        return key    
+
+key = load_or_create_key()
+cipher_suite = Fernet(key)
+    
 def estimate_crack_time(input_data,is_passphrase=False):
     if is_passphrase:
         word_count = input_data
@@ -90,15 +103,16 @@ def make_password(length,website,username):
     print(f"Strength Score: {rating}({score}/4)")   
     print(f"Estimated time to crack: {estimate_crack_time(result)}")
 
-    #The Hashing Engine
-    password_bytes = result.encode('utf-8')
-    secure_hash = hashlib.sha256(password_bytes).hexdigest()
-    print("SHA-256 Hash:",secure_hash)
+    password_bytes = result.encode()
+    encrypted_password = cipher_suite.encrypt(password_bytes)
+    
+    encrypted_password_str = encrypted_password.decode()
+
     file_exists = os.path.isfile("google_passwords.csv")
     with open("google_passwords.csv","a") as file:
         if not file_exists:
             file.write("url,username,password\n")
-        file.write(f"{website},{username},{result}\n")
+        file.write(f"{website},{username},{encrypted_password_str}\n")
         print("DEBUG: Data written to CSV successfully!")
         # If you don't see this, this part of code isn't running
 
@@ -114,11 +128,16 @@ def make_passphrase(word_count, website, username):
     print(f"Generated Passphrase: {result}")
     print(f"Estimated time to crack: {estimate_crack_time(word_count, is_passphrase=True)}")
 
+    password_bytes = result.encode()
+    encrypted_password = cipher_suite.encrypt(password_bytes)
+
+    encrypted_password_str = encrypted_password.decode()
+
     file_exists = os.path.isfile("google_passwords.csv")
     with open("google_passwords.csv","a") as file:
         if not file_exists:
             file.write("url,username,password\n")
-        file.write(f"{website},{username},{result}\n")
+        file.write(f"{website},{username},{encrypted_password_str}\n")
         print("DEBUG: Data written to CSV successfully!")
 
 # ZONE - 4 "Main Execution Loop(The Interface)"

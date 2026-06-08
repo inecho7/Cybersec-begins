@@ -171,32 +171,31 @@ def view_passwords():
 
 while True:
     try:
-        choice = input("Choose 1 for random password, 2 for passphrase or 3 to exit: ")
+        choice = input("Choose 1 for random password, 2 for passphrase, 3 to view credentials or 4 to exit: ")
 #1.ask user for input and save it as a variable called 'user_input'
         if choice == "1":
-            
             length = get_valid_int("Enter desired password length(minimum 8): ",min_value=8)
         #ask the user for three different pieces of information
             website = input("Enter the website/app name: ")
             username = input("Enter the username/email: ")
         #3 Pass all three into the function
-            make_password(length, website, username)
-            break
-        
+            make_password(length, website, username)        
            
         if choice == "2":
             word_count = get_valid_int("Enter the desired word count(minimum 3): ",min_value=3)
             website = input("Enter website/app name: ")
             username = input("Enter username/email: ")
             make_passphrase(word_count, website, username)
-            import sys; sys.exit()
 
-        elif choice == "3":
+        if choice == "3":
+            view_passwords()    
+
+        elif choice == "4":
             print("Exiting Password Generator, Goodbye!")
             break
 
         else:
-            print("Invalid choice. Please select 1, 2 or 3")
+            print("Invalid choice. Please select 1, 2, 3 or 4")
     except ValueError:
         print("An error occurred. Please try again")
 

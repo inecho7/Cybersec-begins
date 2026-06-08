@@ -140,6 +140,32 @@ def make_passphrase(word_count, website, username):
         file.write(f"{website},{username},{encrypted_password_str}\n")
         print("DEBUG: Data written to CSV successfully!")
 
+def view_passwords():
+    if not os.path.exists("google_passwords.csv"):
+        print("\n Our database does not have such credentials.")
+        return
+
+    print("\n=== Saved Credentials ===") 
+    with open("google_passwords.csv", "r") as file:
+        lines = file.readlines()
+
+        for line in lines[1:]:
+            parts = line.strip().split(",")
+            if len(parts) == 3:
+                website = parts[0]
+                username = parts[1]
+                encrypted_password_str = parts[2]
+
+                try:
+                    encrypted_bytes = encrypted_password_str.encode()
+                    decrypted_bytes = cipher_suite.decrypt(encrypted_bytes)
+                    plain_password = decrypted_bytes.decode()
+
+                    print(f"Website: {website} | Username: {username} | Password: {plain_password}")
+                except Exception:
+                    print(f"Website: {website} | Username: {username} | [Decryption failed: Invalid Key]")                
+    print("======================\n")
+
 # ZONE - 4 "Main Execution Loop(The Interface)"
 # =============================================
 
